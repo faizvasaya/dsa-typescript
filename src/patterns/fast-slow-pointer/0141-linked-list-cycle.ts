@@ -1,16 +1,38 @@
 import { ListNode, buildLinkedListWithCycle } from '../../helpers/linked-list';
 
-export function hasCycle(head: ListNode | null): boolean {
-  if (head === null || head.next === null) return false;
+/**
+ * TC: O(N)
+ * SC: O(1)
+ */
+export function hasCycleWithNoExtraSpace(head: ListNode | null): boolean {
+  let slow = head;
+  let fast = head;
 
-  let slow: ListNode | null = head;
-  let fast: ListNode | null = head;
-
-  while (fast !== null && fast.next !== null) {
-    slow = slow!.next;
+  while (slow !== null && fast !== null && fast.next != null) {
+    slow = slow.next;
     fast = fast.next.next;
 
-    if (slow === fast) return true;
+    if (slow == fast) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * TC: O(N)
+ * SC: O(N)
+ */
+export function hasCycleWithExtraSpace(head: ListNode | null): boolean {
+  const seen = new Set();
+
+  let current = head;
+
+  while (current != null) {
+    if (seen.has(current)) return true;
+    seen.add(current);
+    current = current.next;
   }
 
   return false;
@@ -27,10 +49,21 @@ if (require.main === module) {
 
   for (const { arr, cyclePos, expected } of cases) {
     const head = buildLinkedListWithCycle(arr, cyclePos);
-    const result = hasCycle(head);
+    const result = hasCycleWithExtraSpace(head);
     const passed = result === expected ? '✅ Passed' : '❌ Failed';
     console.log(
-      `${passed} arr=${JSON.stringify(arr)} cyclePos=${cyclePos} -> ${result} (expected: ${expected})`,
+      `hasCycle` +
+        `${passed} arr=${JSON.stringify(arr)} cyclePos=${cyclePos} -> ${result} (expected: ${expected})`,
+    );
+  }
+
+  for (const { arr, cyclePos, expected } of cases) {
+    const head = buildLinkedListWithCycle(arr, cyclePos);
+    const result = hasCycleWithNoExtraSpace(head);
+    const passed = result === expected ? '✅ Passed' : '❌ Failed';
+    console.log(
+      `hasCycleWithNoExtraSpace` +
+        `${passed} arr=${JSON.stringify(arr)} cyclePos=${cyclePos} -> ${result} (expected: ${expected})`,
     );
   }
 }
