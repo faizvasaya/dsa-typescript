@@ -73,3 +73,15 @@ export function printLinkedList(head: ListNode | null, maxNodes: number = 50): s
 
   return parts.join(' -> ');
 }
+
+export function getNodeAtIndex(head: ListNode | null, index: number): ListNode | null {
+  if (index < 0) return null;
+  let current = head;
+  let i = 0;
+  while (current != null && i < index) {
+    current = current.next;
+    i++;
+  }
+
+  return current;
+}
