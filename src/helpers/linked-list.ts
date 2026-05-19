@@ -85,3 +85,39 @@ export function getNodeAtIndex(head: ListNode | null, index: number): ListNode |
 
   return current;
 }
+
+export function buildIntersectingLists(
+  arrA: number[],
+  arrB: number[],
+  sharedTail: number[],
+): [ListNode | null, ListNode | null, ListNode | null] {
+  const sharedHead = arrayToLinkedList(sharedTail);
+
+  const headA = arrayToLinkedList(arrA);
+  if (headA === null) {
+    return [sharedHead, attachTail(arrayToLinkedList(arrB), sharedHead), sharedHead];
+  }
+  let tailA = headA;
+  while (tailA.next !== null) tailA = tailA.next;
+  tailA.next = sharedHead;
+
+  const headB = arrayToLinkedList(arrB);
+  if (headB === null) {
+    return [headA, sharedHead, sharedHead];
+  }
+
+  let tailB = headB;
+  while (tailB.next !== null) tailB = tailB.next;
+  tailB.next = sharedHead;
+
+  return [headA, headB, sharedHead];
+}
+
+function attachTail(head: ListNode | null, tail: ListNode | null): ListNode | null {
+  if (head === null) return null;
+
+  let curr = head;
+  while (curr.next !== null) curr = curr.next;
+  curr.next = tail;
+  return head;
+}
