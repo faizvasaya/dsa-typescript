@@ -9,7 +9,7 @@ export function circularArrayLoop(nums: number[]): boolean {
   return false;
 }
 
-function circularArrayLoopWithMarking(nums: number[]): boolean {
+export function circularArrayLoopWithMarking(nums: number[]): boolean {
   for (let index = 0; index < nums.length; index++) {
     if (nums[index] === 0) {
       console.log(`Skipped for ${index}`);
